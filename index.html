@@ -1,39 +1,655 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Investor Relations – Lukintosh</title>
-<style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f7; color: #111; }
-    header { background: #000; color: #fff; padding: 40px; text-align: center; }
-    h1 { margin: 0; font-size: 40px; }
-    .container { max-width: 900px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
-    h2 { font-size: 26px; margin-bottom: 10px; }
-    p, li { font-size: 18px; line-height: 1.6; }
-    a.pdf { display: inline-block; margin-top: 12px; padding: 12px 20px; background: #000; color: #fff; text-decoration: none; border-radius: 8px; }
-    a.pdf:hover { background: #333; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lukintosh Investor Relations</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f7f5f0;
+      --paper: #fffdf8;
+      --text: #111111;
+      --muted: #6b6b6b;
+      --line: rgba(0,0,0,.11);
+      --soft: rgba(0,0,0,.045);
+      --accent: #111111;
+      --radius: 28px;
+      --serif: "Cormorant Garamond", serif;
+      --sans: "Inter", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.9), transparent 35%),
+        linear-gradient(180deg, #fbfaf6 0%, var(--bg) 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .035;
+      z-index: 9999;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      backdrop-filter: blur(24px);
+      background: rgba(247,245,240,.78);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      max-width: 1280px;
+      margin: auto;
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: -.04em;
+      font-size: 18px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.45);
+    }
+
+    main {
+      padding-top: 90px;
+    }
+
+    section {
+      max-width: 1280px;
+      margin: auto;
+      padding: 90px 28px;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: center;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(76px, 15vw, 190px);
+      font-weight: 300;
+      letter-spacing: -.075em;
+      line-height: .82;
+    }
+
+    .hero-subtitle {
+      max-width: 760px;
+      font-size: clamp(20px, 3vw, 31px);
+      line-height: 1.35;
+      color: #222;
+      margin-top: 38px;
+      letter-spacing: -.04em;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 42px;
+    }
+
+    .btn {
+      border: 1px solid var(--text);
+      border-radius: 999px;
+      padding: 15px 22px;
+      font-size: 14px;
+      transition: .25s ease;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      background: var(--text);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .notice {
+      margin-top: 36px;
+      max-width: 800px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px 20px;
+      color: var(--muted);
+      background: rgba(255,255,255,.42);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(48px, 7vw, 88px);
+      font-weight: 400;
+      letter-spacing: -.055em;
+      margin-bottom: 28px;
+    }
+
+    .section-intro {
+      max-width: 780px;
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 44px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.5);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 28px;
+      min-height: 190px;
+      transition: .3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      background: rgba(255,255,255,.75);
+    }
+
+    .metric {
+      font-family: var(--serif);
+      font-size: 56px;
+      letter-spacing: -.06em;
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .reports {
+      border-top: 1px solid var(--line);
+    }
+
+    .report-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 20px;
+      align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--line);
+      transition: .2s ease;
+    }
+
+    .report-row:hover {
+      padding-left: 14px;
+    }
+
+    .report-title {
+      font-size: 24px;
+      letter-spacing: -.04em;
+    }
+
+    .tag {
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+    }
+
+    .arrow {
+      font-size: 22px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 34px;
+      padding: 34px;
+    }
+
+    .panel h3 {
+      font-family: var(--serif);
+      font-size: 42px;
+      font-weight: 400;
+      letter-spacing: -.05em;
+      margin-bottom: 18px;
+    }
+
+    .panel p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .timeline {
+      border-left: 1px solid var(--line);
+      padding-left: 28px;
+    }
+
+    .time-item {
+      margin-bottom: 34px;
+    }
+
+    .year {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .time-title {
+      font-size: 24px;
+      letter-spacing: -.04em;
+      margin-bottom: 8px;
+    }
+
+    .governance-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .governance-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+    }
+
+    .governance-item strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 60px 28px;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-logo {
+      font-family: var(--serif);
+      color: var(--text);
+      font-size: 44px;
+      letter-spacing: -.07em;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: .7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .nav-links {
+        display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .split {
+        grid-template-columns: 1fr;
+      }
+
+      .report-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) {
+      section {
+        padding: 70px 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 74px;
+      }
+
+      .hero-subtitle {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header>
-    <h1>Lukintosh Investor Relations</h1>
-    <p>Official Reports & Financial Information</p>
-</header>
+  <div class="noise"></div>
 
-<div class="container">
-    <h2>📄 Available Reports</h2>
-    <p>Download Lukintosh’s official investor documents:</p>
+  <header>
+    <nav class="nav">
+      <a href="#" class="brand">LUKINTOSH</a>
+      <div class="nav-links">
+        <a href="#reports">Reports</a>
+        <a href="#financials">Financials</a>
+        <a href="#governance">Governance</a>
+        <a href="#timeline">Timeline</a>
+        <a href="#contact" class="pill">Investor Contact</a>
+      </div>
+    </nav>
+  </header>
 
-    <p><a class="pdf" href="Lukintosh_Annual_Report.pdf">Download Annual Report</a></p>
-    <p><a class="pdf" href="Lukintosh_Form_10K.pdf">Download Form 10-K</a></p>
+  <main>
+    <section class="hero reveal">
+      <div>
+        <div class="eyebrow">Investor Relations / Private Preview</div>
 
-    <h2>About Lukintosh</h2>
-    <p>
-        Lukintosh is an emerging global technology, hardware, and entertainment group operating across Silicon Engineering,
-        HyperBagel Campus Systems, enterprise innovation, and creative media.
-    </p>
-</div>
+        <h1>
+          Investor<br>
+          Relations
+        </h1>
 
+        <p class="hero-subtitle">
+          Official reports, financial information, governance materials,
+          and corporate updates from Lukintosh Corporation.
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="#reports">View Reports</a>
+          <a class="btn" href="#about">About Lukintosh</a>
+        </div>
+
+        <div class="notice">
+          Private mock investor relations website. Lukintosh Corporation is not currently
+          a public reporting company and this website does not contain documents filed with
+          the U.S. Securities and Exchange Commission.
+        </div>
+      </div>
+    </section>
+
+    <section id="financials" class="reveal">
+      <div class="eyebrow">Financial Overview</div>
+      <h2 class="section-title">Financial Highlights</h2>
+      <p class="section-intro">
+        A clean preview of company metrics, designed for internal presentation,
+        annual reports, and future-ready investor materials.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="metric">—</div>
+          <div class="label">Revenue<br>Private company preview</div>
+        </div>
+
+        <div class="card">
+          <div class="metric">1</div>
+          <div class="label">Founder-led<br>Early-stage structure</div>
+        </div>
+
+        <div class="card">
+          <div class="metric">10+</div>
+          <div class="label">Products and initiatives<br>Software, AI and platforms</div>
+        </div>
+
+        <div class="card">
+          <div class="metric">100+</div>
+          <div class="label">Countries reached<br>Digital presence and visibility</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reports" class="reveal">
+      <div class="eyebrow">Documents</div>
+      <h2 class="section-title">Available Reports</h2>
+
+      <div class="reports">
+        <a class="report-row" href="annual-report.pdf">
+          <div class="report-title">2026 Annual Report Preview</div>
+          <div class="tag">PDF</div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="report-row" href="form10-k.pdf">
+          <div class="report-title">2026 Form 10-K Private Mock Draft</div>
+          <div class="tag">PDF</div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="report-row" href="#">
+          <div class="report-title">Corporate Governance Overview</div>
+          <div class="tag">Coming Soon</div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="report-row" href="#">
+          <div class="report-title">Risk Factors Archive</div>
+          <div class="tag">Coming Soon</div>
+          <div class="arrow">→</div>
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="reveal">
+      <div class="split">
+        <div>
+          <div class="eyebrow">About</div>
+          <h2 class="section-title">A technology company built for the future.</h2>
+          <p class="section-intro">
+            Lukintosh Corporation is an emerging technology company focused on
+            software, artificial intelligence, developer tools, digital platforms,
+            creative media, and next-generation human-computer interaction.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>Corporate Profile</h3>
+          <p>
+            Lukintosh operates as a private, founder-led company with ambitions
+            across software infrastructure, AI systems, developer platforms,
+            consumer experiences, and technology research.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="governance" class="reveal">
+      <div class="eyebrow">Governance</div>
+      <h2 class="section-title">Governance Overview</h2>
+
+      <div class="panel">
+        <div class="governance-list">
+          <div class="governance-item">
+            <span>Founder & Chief Executive Officer</span>
+            <strong>Lucas Correa</strong>
+          </div>
+
+          <div class="governance-item">
+            <span>Company Status</span>
+            <strong>Private Company</strong>
+          </div>
+
+          <div class="governance-item">
+            <span>Headquarters</span>
+            <strong>Belo Horizonte, Brazil</strong>
+          </div>
+
+          <div class="governance-item">
+            <span>Primary Focus</span>
+            <strong>Technology, AI and Software</strong>
+          </div>
+
+          <div class="governance-item">
+            <span>SEC Reporting Status</span>
+            <strong>Not a reporting company</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline" class="reveal">
+      <div class="eyebrow">History</div>
+      <h2 class="section-title">Corporate Timeline</h2>
+
+      <div class="timeline">
+        <div class="time-item">
+          <div class="year">2023</div>
+          <div class="time-title">Lukintosh concept created</div>
+          <p class="label">The brand begins as a technology and creative company vision.</p>
+        </div>
+
+        <div class="time-item">
+          <div class="year">2024</div>
+          <div class="time-title">Initial public identity</div>
+          <p class="label">Early websites, product experiments, and corporate structure planning.</p>
+        </div>
+
+        <div class="time-item">
+          <div class="year">2025</div>
+          <div class="time-title">Expansion of platforms</div>
+          <p class="label">Developer tools, AI concepts, web properties, and product prototypes.</p>
+        </div>
+
+        <div class="time-item">
+          <div class="year">2026</div>
+          <div class="time-title">Investor Relations preview</div>
+          <p class="label">A private investor-style website is created for reports and corporate documentation.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="reveal">
+      <div class="split">
+        <div>
+          <div class="eyebrow">Contact</div>
+          <h2 class="section-title">Investor Contact</h2>
+          <p class="section-intro">
+            For corporate information, reports, and investor-style inquiries,
+            contact Lukintosh through the official corporate channels.
+          </p>
+        </div>
+
+        <div class="panel">
+          <h3>Lukintosh Corporation</h3>
+          <p>
+            Email: lucas@lukintosh.com<br>
+            Website: lukintosh.com<br>
+            Investor Relations: investor.lukintosh.com
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">Lukintosh</div>
+        <p>Investor Relations</p>
+      </div>
+
+      <div>
+        <p>
+          © 2026 Lukintosh Corporation.<br>
+          Private mock website. Not affiliated with or filed with the SEC.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
 </body>
 </html>
