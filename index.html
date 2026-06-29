@@ -248,6 +248,155 @@
       font-size: 16px;
     }
 
+    .stock-board {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .quote {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 34px 0;
+    }
+
+    .quote-symbol {
+      font-size: 13px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      margin-bottom: 16px;
+    }
+
+    .quote-price {
+      font-family: var(--serif);
+      font-size: clamp(62px, 12vw, 126px);
+      line-height: .85;
+      letter-spacing: -.06em;
+    }
+
+    .quote-change {
+      margin-top: 18px;
+      font-size: 20px;
+      color: #137333;
+      font-weight: 700;
+    }
+
+    .quote-note {
+      margin-top: 24px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 660px;
+    }
+
+    .quote-stats {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.45);
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stat-row strong {
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .filing-controls {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+      flex-wrap: wrap;
+      margin: 34px 0 18px;
+    }
+
+    .select-wrap label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      margin-bottom: 9px;
+    }
+
+    select {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      color: var(--text);
+      padding: 12px 42px 12px 14px;
+      font: inherit;
+      min-width: 160px;
+    }
+
+    .filing-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 1px solid var(--line);
+      font-size: 14px;
+    }
+
+    .filing-table th,
+    .filing-table td {
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      padding: 18px 12px;
+      vertical-align: top;
+    }
+
+    .filing-table th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 700;
+    }
+
+    .filing-code {
+      font-weight: 800;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .filing-group {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .format-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .format-links a {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      background: rgba(255,255,255,.5);
+    }
+
+    .disclosure {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13px;
+      max-width: 780px;
+    }
+
     footer {
       border-top: 1px solid var(--line);
       padding: 60px 28px;
@@ -285,8 +434,10 @@
       .nav-links { display: none; }
       .grid { grid-template-columns: 1fr 1fr; }
       .split { grid-template-columns: 1fr; }
+      .stock-board { grid-template-columns: 1fr; }
       .report-row { grid-template-columns: 1fr; }
       .footer-inner { flex-direction: column; }
+      .filing-table { display: block; overflow-x: auto; white-space: nowrap; }
     }
 
     @media (max-width: 560px) {
@@ -306,6 +457,8 @@
       <div class="nav-links">
         <a href="#reports">Reports</a>
         <a href="#financials">Financials</a>
+        <a href="#stock-price">Stock Price</a>
+        <a href="#sec-filings">SEC Filings</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
       </div>
@@ -393,6 +546,104 @@
       </div>
     </section>
 
+    <section id="stock-price" class="reveal">
+      <div class="eyebrow">Stock Price</div>
+      <h2 class="section-title">LUKI Quote</h2>
+      <div class="stock-board">
+        <div class="quote">
+          <div class="quote-symbol">LUKI - Illustrative investor quote</div>
+          <div class="quote-price">$198.42</div>
+          <div class="quote-change">+1.26 (+0.64%)</div>
+          <p class="quote-note">
+            Pricing data is shown for investor-relations presentation purposes only.
+            Lukintosh Corporation is not represented here as a listed security.
+          </p>
+        </div>
+
+        <div class="quote-stats">
+          <div class="stat-row"><span>Open</span><strong>$196.80</strong></div>
+          <div class="stat-row"><span>Day range</span><strong>$195.94 - $199.08</strong></div>
+          <div class="stat-row"><span>52 week range</span><strong>$142.10 - $214.70</strong></div>
+          <div class="stat-row"><span>Volume</span><strong>42.8M</strong></div>
+          <div class="stat-row"><span>Market cap</span><strong>$3.04T</strong></div>
+          <div class="stat-row"><span>Last updated</span><strong>Jun 29, 2026</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-filings" class="reveal">
+      <div class="eyebrow">SEC Filings</div>
+      <h2 class="section-title">Filings & Reports</h2>
+      <p class="section-intro">
+        Apple-style filing groupings with year selection and PDF/HTML formats.
+        Lukintosh reference documents are not filed with the SEC.
+      </p>
+
+      <div class="filing-controls">
+        <div class="select-wrap">
+          <label for="filing-year">Select year</label>
+          <select id="filing-year" aria-label="Select filing year">
+            <option value="all">All years</option>
+            <option value="2026" selected>2026</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+        <p class="disclosure">
+          SEC grouping labels, filing names, and presentation formats are for investor-relations
+          organization only. These documents have not been submitted to the SEC.
+        </p>
+      </div>
+
+      <table class="filing-table">
+        <thead>
+          <tr>
+            <th>Filing</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Format</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr data-year="2026">
+            <td><div class="filing-code">10-Q</div><div class="filing-group">Quarterly Reports</div></td>
+            <td>Quarterly Report - Q2 2026</td>
+            <td>May 01, 2026</td>
+            <td><div class="format-links"><a href="annuals/form-10-q-q2-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-q-q2-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026">
+            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Reports</div></td>
+            <td>Annual Report Style Reference Document</td>
+            <td>Feb 28, 2026</td>
+            <td><div class="format-links"><a href="annuals/form-10-k-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-k-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026">
+            <td><div class="filing-code">AR</div><div class="filing-group">Annual Reports</div></td>
+            <td>2026 Annual Report</td>
+            <td>Feb 28, 2026</td>
+            <td><div class="format-links"><a href="annuals/annual-report-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/annual-report-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026">
+            <td><div class="filing-code">SD</div><div class="filing-group">Specialized Disclosure</div></td>
+            <td>Specialized Disclosure Report - Reference Summary</td>
+            <td>May 28, 2026</td>
+            <td><div class="format-links"><a href="annuals/annual-report-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/annual-report-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026">
+            <td><div class="filing-code">4</div><div class="filing-group">Section 16</div></td>
+            <td>Officer Transaction Notice - Reference Entry</td>
+            <td>Jun 17, 2026</td>
+            <td><div class="format-links"><a href="annuals/form-10-q-q2-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-q-q2-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2025">
+            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Reports</div></td>
+            <td>2025 Annual Report Archive</td>
+            <td>Feb 27, 2025</td>
+            <td><div class="format-links"><a href="annuals/form-10-k-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-k-2026.html">HTML</a></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
     <section id="about" class="reveal">
       <div class="split">
         <div>
@@ -467,6 +718,21 @@
     }, { threshold: 0.12 });
 
     reveals.forEach(el => observer.observe(el));
+
+    const filingYear = document.querySelector("#filing-year");
+    const filingRows = document.querySelectorAll("[data-year]");
+
+    const filterFilings = () => {
+      const year = filingYear.value;
+      filingRows.forEach(row => {
+        row.hidden = year !== "all" && row.dataset.year !== year;
+      });
+    };
+
+    if (filingYear) {
+      filingYear.addEventListener("change", filterFilings);
+      filterFilings();
+    }
   </script>
 </body>
 </html>
