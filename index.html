@@ -820,6 +820,19 @@
 
       <div class="filing-controls">
         <div class="select-wrap">
+          <label for="filing-group">Filing group</label>
+          <select id="filing-group" aria-label="Select filing group">
+            <option value="all" selected>All Filings</option>
+            <option value="annual">Annual Filings</option>
+            <option value="quarterly">Quarterly Filings</option>
+            <option value="current">Current Reports</option>
+            <option value="proxy">Proxy Filings</option>
+            <option value="registration">Registration Statements</option>
+            <option value="section16">Section 16 Filings</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="select-wrap">
           <label for="filing-year">Select year</label>
           <select id="filing-year" aria-label="Select filing year">
             <option value="all">All years</option>
@@ -843,38 +856,56 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-year="2026">
-            <td><div class="filing-code">10-Q</div><div class="filing-group">Quarterly Reports</div></td>
+          <tr data-year="2026" data-group="quarterly">
+            <td><div class="filing-code">10-Q</div><div class="filing-group">Quarterly Filings</div></td>
             <td>Quarterly Report - Q2 2026</td>
             <td>May 01, 2026</td>
             <td><div class="format-links"><a href="annuals/form-10-q-q2-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-q-q2-2026.html">HTML</a></div></td>
           </tr>
-          <tr data-year="2026">
-            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Reports</div></td>
+          <tr data-year="2026" data-group="annual">
+            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Filings</div></td>
             <td>Annual Report Style Reference Document</td>
             <td>Feb 28, 2026</td>
             <td><div class="format-links"><a href="annuals/form-10-k-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-k-2026.html">HTML</a></div></td>
           </tr>
-          <tr data-year="2026">
-            <td><div class="filing-code">AR</div><div class="filing-group">Annual Reports</div></td>
+          <tr data-year="2026" data-group="annual">
+            <td><div class="filing-code">AR</div><div class="filing-group">Annual Filings</div></td>
             <td>2026 Annual Report</td>
             <td>Feb 28, 2026</td>
             <td><div class="format-links"><a href="annuals/annual-report-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/annual-report-2026.html">HTML</a></div></td>
           </tr>
-          <tr data-year="2026">
-            <td><div class="filing-code">SD</div><div class="filing-group">Specialized Disclosure</div></td>
+          <tr data-year="2026" data-group="current">
+            <td><div class="filing-code">8-K</div><div class="filing-group">Current Reports</div></td>
+            <td>Current Report - Reference Entry</td>
+            <td>Jun 17, 2026</td>
+            <td><div class="format-links"><a href="annuals/form-10-q-q2-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-q-q2-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026" data-group="proxy">
+            <td><div class="filing-code">DEF 14A</div><div class="filing-group">Proxy Filings</div></td>
+            <td>Proxy Statement - Reference Entry</td>
+            <td>May 29, 2026</td>
+            <td><div class="format-links"><a href="annuals/annual-report-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/annual-report-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026" data-group="registration">
+            <td><div class="filing-code">S-8</div><div class="filing-group">Registration Statements</div></td>
+            <td>Registration Statement - Reference Entry</td>
+            <td>May 12, 2026</td>
+            <td><div class="format-links"><a href="annuals/form-10-k-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-k-2026.html">HTML</a></div></td>
+          </tr>
+          <tr data-year="2026" data-group="other">
+            <td><div class="filing-code">SD</div><div class="filing-group">Other</div></td>
             <td>Specialized Disclosure Report - Reference Summary</td>
             <td>May 28, 2026</td>
             <td><div class="format-links"><a href="annuals/annual-report-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/annual-report-2026.html">HTML</a></div></td>
           </tr>
-          <tr data-year="2026">
-            <td><div class="filing-code">4</div><div class="filing-group">Section 16</div></td>
+          <tr data-year="2026" data-group="section16">
+            <td><div class="filing-code">4</div><div class="filing-group">Section 16 Filings</div></td>
             <td>Officer Transaction Notice - Reference Entry</td>
             <td>Jun 17, 2026</td>
             <td><div class="format-links"><a href="annuals/form-10-q-q2-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-q-q2-2026.html">HTML</a></div></td>
           </tr>
-          <tr data-year="2025">
-            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Reports</div></td>
+          <tr data-year="2025" data-group="annual">
+            <td><div class="filing-code">10-K</div><div class="filing-group">Annual Filings</div></td>
             <td>2025 Annual Report Archive</td>
             <td>Feb 27, 2025</td>
             <td><div class="format-links"><a href="annuals/form-10-k-2026.pdf" target="_blank" rel="noopener noreferrer">PDF</a><a href="annuals/form-10-k-2026.html">HTML</a></div></td>
@@ -958,20 +989,29 @@
 
     reveals.forEach(el => observer.observe(el));
 
+    const filingGroup = document.querySelector("#filing-group");
     const filingYear = document.querySelector("#filing-year");
-    const filingRows = document.querySelectorAll("[data-year]");
+    const filingRows = document.querySelectorAll("[data-year][data-group]");
 
     const filterFilings = () => {
-      const year = filingYear.value;
+      const group = filingGroup ? filingGroup.value : "all";
+      const year = filingYear ? filingYear.value : "all";
       filingRows.forEach(row => {
-        row.hidden = year !== "all" && row.dataset.year !== year;
+        const matchesGroup = group === "all" || row.dataset.group === group;
+        const matchesYear = year === "all" || row.dataset.year === year;
+        row.hidden = !matchesGroup || !matchesYear;
       });
     };
 
+    if (filingGroup) {
+      filingGroup.addEventListener("change", filterFilings);
+    }
+
     if (filingYear) {
       filingYear.addEventListener("change", filterFilings);
-      filterFilings();
     }
+
+    filterFilings();
 
     const stockSeries = {
       "1D": {
