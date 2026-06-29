@@ -805,7 +805,7 @@
           </div>
 
           <div class="stock-price-wrap" aria-label="LKNT illustrative price">
-            <div class="stock-price">$412.80</div>
+            <div id="stock-price-value" class="stock-price">$412.80</div>
             <div id="stock-change" class="stock-change">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 5l7 8h-5v6h-4v-6H5l7-8z" fill="currentColor"></path>
@@ -828,7 +828,7 @@
           <div class="chart-panel">
             <div class="chart-caption">
               <span id="stock-period-label">Intraday scenario</span>
-              <span>Delayed demo quote</span>
+              <span>Daily demo quote</span>
             </div>
             <div class="chart-wrap" aria-label="LKNT illustrative stock chart">
               <svg viewBox="0 0 640 260" role="img">
@@ -856,13 +856,13 @@
           </div>
 
           <div class="stock-stats">
-            <div class="stock-card"><span>Open</span><strong>$411.20</strong></div>
-            <div class="stock-card"><span>Previous Close</span><strong>$410.95</strong></div>
-            <div class="stock-card"><span>Day Range</span><strong>$407.90 - $414.25</strong></div>
-            <div class="stock-card"><span>52 Week Range</span><strong>$275.00 - $438.00</strong></div>
-            <div class="stock-card"><span>Volume</span><strong>22.6M</strong></div>
-            <div class="stock-card"><span>Market Cap</span><strong>$4.1T</strong></div>
-            <div class="stock-card"><span>Last Updated</span><strong>Jun 29, 2026, 4:00 PM ET</strong></div>
+            <div class="stock-card"><span>Open</span><strong id="stock-open">$411.20</strong></div>
+            <div class="stock-card"><span>Previous Close</span><strong id="stock-previous-close">$410.95</strong></div>
+            <div class="stock-card"><span>Day Range</span><strong id="stock-day-range">$407.90 - $414.25</strong></div>
+            <div class="stock-card"><span>52 Week Range</span><strong id="stock-year-range">$275.00 - $438.00</strong></div>
+            <div class="stock-card"><span>Volume</span><strong id="stock-volume">22.6M</strong></div>
+            <div class="stock-card"><span>Market Cap</span><strong id="stock-market-cap">$4.1T</strong></div>
+            <div class="stock-card"><span>Last Updated</span><strong id="stock-last-updated">Jun 29, 2026, 4:00 PM ET</strong></div>
           </div>
         </div>
         <p class="stock-footnote">Demo interface. LKNT is not publicly traded.</p>
@@ -1072,92 +1072,135 @@
 
     filterFilings();
 
-    const stockSeries = {
-      "1D": {
-        label: "Intraday scenario",
-        change: "+1.85 (+0.45%) today",
-        direction: "up",
-        accent: "#0a8f5c",
-        line: "M0,146 C44,138 82,154 124,148 C166,142 208,152 250,136 C292,120 336,132 378,126 C424,118 462,132 506,116 C554,98 592,106 640,94",
-        dot: [640, 94]
-      },
-      "5D": {
-        label: "Five day scenario",
-        change: "-3.28 (-0.79%) 5D",
-        direction: "down",
-        accent: "#b42318",
-        line: "M0,108 C44,98 78,116 124,110 C174,104 212,134 258,128 C304,122 344,150 392,144 C438,138 482,166 528,160 C574,154 606,176 640,170",
-        dot: [640, 170]
-      },
-      "1M": {
-        label: "One month scenario",
-        change: "+6.42 (+1.58%) 1M",
-        direction: "up",
-        accent: "#0a8f5c",
-        line: "M0,158 C44,170 82,142 126,150 C172,158 206,126 252,138 C296,150 336,112 384,120 C430,128 466,146 512,124 C560,102 598,118 640,92",
-        dot: [640, 92]
-      },
-      "6M": {
-        label: "Six month scenario",
-        change: "-18.12 (-4.21%) 6M",
-        direction: "down",
-        accent: "#b42318",
-        line: "M0,90 C46,78 86,104 130,96 C176,88 212,128 258,120 C306,112 344,154 390,148 C436,142 474,176 522,168 C570,160 604,188 640,180",
-        dot: [640, 180]
-      },
-      "1Y": {
-        label: "One year scenario",
-        change: "+29.46 (+7.69%) 1Y",
-        direction: "up",
-        accent: "#0a8f5c",
-        line: "M0,190 C48,178 86,202 132,188 C178,174 214,138 260,146 C306,154 342,124 388,132 C436,140 470,96 516,104 C564,112 598,78 640,66",
-        dot: [640, 66]
-      },
-      "ALL": {
-        label: "All time scenario",
-        change: "+63.80 (+18.28%) all time",
-        direction: "up",
-        accent: "#0a8f5c",
-        line: "M0,210 C46,198 82,216 126,204 C172,192 208,154 254,164 C300,174 336,132 382,142 C428,152 466,112 512,120 C560,128 596,84 640,74",
-        dot: [640, 74]
-      }
+    const formatCurrency = value => `$${value.toFixed(2)}`;
+    const formatPercent = value => `${value >= 0 ? "+" : ""}${value.toFixed(2)}%`;
+    const seededNoise = seed => {
+      const wave = Math.sin(seed * 12.9898) * 43758.5453;
+      return wave - Math.floor(wave);
     };
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+    const today = new Date();
+    const daySeed = Math.floor(new Date(today.getFullYear(), today.getMonth(), today.getDate()).getTime() / 86400000);
+    const previousClose = 406 + Math.sin(daySeed / 17) * 18 + Math.sin(daySeed / 6) * 7;
+    const dailyPercent = clamp((seededNoise(daySeed + 11) - .5) * 2.4 + Math.sin(daySeed / 4) * .25, -1.65, 1.85);
+    const currentPrice = previousClose * (1 + dailyPercent / 100);
+    const openPrice = previousClose * (1 + (seededNoise(daySeed + 23) - .5) * .012);
+    const dayLow = Math.min(openPrice, previousClose, currentPrice) * (1 - (.004 + seededNoise(daySeed + 31) * .008));
+    const dayHigh = Math.max(openPrice, previousClose, currentPrice) * (1 + (.004 + seededNoise(daySeed + 37) * .008));
+    const yearLow = currentPrice * (.66 + seededNoise(daySeed + 41) * .05);
+    const yearHigh = currentPrice * (1.05 + seededNoise(daySeed + 43) * .09);
+    const volume = 18 + seededNoise(daySeed + 47) * 28;
+    const marketCap = currentPrice * 10 / 1000;
+    const dateLabel = today.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+
+    const buildStockPath = (period, index) => {
+      const periodConfig = {
+        "1D": { points: 9, move: dailyPercent, noise: 1.4, label: "Intraday scenario", suffix: "today" },
+        "5D": { points: 10, move: (seededNoise(daySeed + 101) - .58) * 5.2, noise: 2.2, label: "Five day scenario", suffix: "5D" },
+        "1M": { points: 12, move: (seededNoise(daySeed + 111) - .46) * 9.5, noise: 3.2, label: "One month scenario", suffix: "1M" },
+        "6M": { points: 14, move: (seededNoise(daySeed + 121) - .5) * 18, noise: 4.6, label: "Six month scenario", suffix: "6M" },
+        "1Y": { points: 15, move: (seededNoise(daySeed + 131) - .43) * 26, noise: 5.2, label: "One year scenario", suffix: "1Y" },
+        "ALL": { points: 16, move: (seededNoise(daySeed + 141) - .36) * 42, noise: 6.5, label: "All time scenario", suffix: "all time" }
+      }[period];
+
+      const points = Array.from({ length: periodConfig.points }, (_, pointIndex) => {
+        const progress = pointIndex / (periodConfig.points - 1);
+        const seasonal = Math.sin((pointIndex + 1) * 1.7 + index) * periodConfig.noise;
+        const randomWalk = (seededNoise(daySeed + index * 53 + pointIndex * 7) - .5) * periodConfig.noise * 2;
+        return 100 + periodConfig.move * progress + seasonal + randomWalk;
+      });
+
+      points[0] = 100;
+      points[points.length - 1] = 100 + periodConfig.move;
+      const min = Math.min(...points);
+      const max = Math.max(...points);
+      const spread = Math.max(1, max - min);
+      const coords = points.map((point, pointIndex) => {
+        const x = (640 / (points.length - 1)) * pointIndex;
+        const y = 210 - ((point - min) / spread) * 150;
+        return [x, y];
+      });
+      const line = coords.reduce((path, coord, pointIndex) => {
+        if (pointIndex === 0) return `M${coord[0].toFixed(1)},${coord[1].toFixed(1)}`;
+        const previous = coords[pointIndex - 1];
+        const midX = (previous[0] + coord[0]) / 2;
+        return `${path} C${midX.toFixed(1)},${previous[1].toFixed(1)} ${midX.toFixed(1)},${coord[1].toFixed(1)} ${coord[0].toFixed(1)},${coord[1].toFixed(1)}`;
+      }, "");
+      const periodChange = previousClose * periodConfig.move / 100;
+
+      return {
+        label: periodConfig.label,
+        change: `${periodChange >= 0 ? "+" : ""}${periodChange.toFixed(2)} (${formatPercent(periodConfig.move)}) ${periodConfig.suffix}`,
+        direction: periodConfig.move >= 0 ? "up" : "down",
+        accent: periodConfig.move >= 0 ? "#0a8f5c" : "#b42318",
+        line,
+        dot: coords[coords.length - 1]
+      };
+    };
+
+    const stockSeries = ["1D", "5D", "1M", "6M", "1Y", "ALL"].reduce((series, period, index) => {
+      series[period] = buildStockPath(period, index);
+      return series;
+    }, {});
 
     const stockLine = document.querySelector("#stock-line");
     const stockArea = document.querySelector("#stock-area");
     const stockDot = document.querySelector("#stock-dot");
+    const stockPriceValue = document.querySelector("#stock-price-value");
     const stockChange = document.querySelector("#stock-change");
     const stockChangeValue = document.querySelector("#stock-change-value");
     const stockTerminal = document.querySelector(".stock-terminal");
     const stockGradientStops = document.querySelectorAll("#lkntArea stop");
     const stockPeriodLabel = document.querySelector("#stock-period-label");
     const stockButtons = document.querySelectorAll("[data-stock-period]");
+    const stockFields = {
+      open: document.querySelector("#stock-open"),
+      previousClose: document.querySelector("#stock-previous-close"),
+      dayRange: document.querySelector("#stock-day-range"),
+      yearRange: document.querySelector("#stock-year-range"),
+      volume: document.querySelector("#stock-volume"),
+      marketCap: document.querySelector("#stock-market-cap"),
+      lastUpdated: document.querySelector("#stock-last-updated")
+    };
+
+    const renderStockPeriod = period => {
+      const series = stockSeries[period];
+      if (!series || !stockLine || !stockArea || !stockDot || !stockPeriodLabel) return;
+
+      stockButtons.forEach(item => item.classList.toggle("active", item.dataset.stockPeriod === period));
+      stockPeriodLabel.textContent = series.label;
+      if (stockChange && stockChangeValue) {
+        stockChange.classList.toggle("down", series.direction === "down");
+        stockChangeValue.textContent = series.change;
+      }
+      if (stockTerminal) {
+        stockTerminal.style.setProperty("--stock-accent", series.accent);
+      }
+      stockGradientStops.forEach(stop => stop.setAttribute("stop-color", series.accent));
+      stockLine.setAttribute("d", series.line);
+      stockArea.setAttribute("d", `${series.line} L640,234 L0,234 Z`);
+      stockDot.setAttribute("cx", series.dot[0]);
+      stockDot.setAttribute("cy", series.dot[1]);
+
+      stockLine.style.animation = "none";
+      stockLine.getBoundingClientRect();
+      stockLine.style.animation = "";
+    };
+
+    if (stockPriceValue) stockPriceValue.textContent = formatCurrency(currentPrice);
+    if (stockFields.open) stockFields.open.textContent = formatCurrency(openPrice);
+    if (stockFields.previousClose) stockFields.previousClose.textContent = formatCurrency(previousClose);
+    if (stockFields.dayRange) stockFields.dayRange.textContent = `${formatCurrency(dayLow)} - ${formatCurrency(dayHigh)}`;
+    if (stockFields.yearRange) stockFields.yearRange.textContent = `${formatCurrency(yearLow)} - ${formatCurrency(yearHigh)}`;
+    if (stockFields.volume) stockFields.volume.textContent = `${volume.toFixed(1)}M`;
+    if (stockFields.marketCap) stockFields.marketCap.textContent = `$${marketCap.toFixed(1)}T`;
+    if (stockFields.lastUpdated) stockFields.lastUpdated.textContent = `${dateLabel}, 4:00 PM ET`;
 
     stockButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        const series = stockSeries[button.dataset.stockPeriod];
-        if (!series || !stockLine || !stockArea || !stockDot || !stockPeriodLabel) return;
-
-        stockButtons.forEach(item => item.classList.toggle("active", item === button));
-        stockPeriodLabel.textContent = series.label;
-        if (stockChange && stockChangeValue) {
-          stockChange.classList.toggle("down", series.direction === "down");
-          stockChangeValue.textContent = series.change;
-        }
-        if (stockTerminal) {
-          stockTerminal.style.setProperty("--stock-accent", series.accent);
-        }
-        stockGradientStops.forEach(stop => stop.setAttribute("stop-color", series.accent));
-        stockLine.setAttribute("d", series.line);
-        stockArea.setAttribute("d", `${series.line} L640,234 L0,234 Z`);
-        stockDot.setAttribute("cx", series.dot[0]);
-        stockDot.setAttribute("cy", series.dot[1]);
-
-        stockLine.style.animation = "none";
-        stockLine.getBoundingClientRect();
-        stockLine.style.animation = "";
-      });
+      button.addEventListener("click", () => renderStockPeriod(button.dataset.stockPeriod));
     });
+
+    renderStockPeriod("1D");
   </script>
 </body>
 </html>
