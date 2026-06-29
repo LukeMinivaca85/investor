@@ -343,14 +343,20 @@
       justify-content: flex-end;
       gap: 8px;
       margin-top: 14px;
-      color: #087a48;
+      color: var(--stock-accent, #087a48);
       font-size: 17px;
       font-weight: 800;
+      transition: color .25s ease;
     }
 
     .stock-change svg {
       width: 18px;
       height: 18px;
+      transition: transform .25s ease;
+    }
+
+    .stock-change.down svg {
+      transform: rotate(180deg);
     }
 
     .stock-periods {
@@ -442,7 +448,7 @@
 
     .chart-line {
       fill: none;
-      stroke: #0a8f5c;
+      stroke: var(--stock-accent, #0a8f5c);
       stroke-width: 4;
       stroke-linecap: round;
       stroke-linejoin: round;
@@ -454,7 +460,7 @@
 
     .chart-dot {
       fill: #fff;
-      stroke: #0a8f5c;
+      stroke: var(--stock-accent, #0a8f5c);
       stroke-width: 4;
       filter: drop-shadow(0 6px 12px rgba(10,143,92,.2));
     }
@@ -799,12 +805,12 @@
           </div>
 
           <div class="stock-price-wrap" aria-label="LKNT illustrative price">
-            <div class="stock-price">$421.70</div>
-            <div class="stock-change">
+            <div class="stock-price">$412.80</div>
+            <div id="stock-change" class="stock-change">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 5l7 8h-5v6h-4v-6H5l7-8z" fill="currentColor"></path>
               </svg>
-              +12.34 (+3.01%)
+              <span id="stock-change-value">+1.85 (+0.45%) today</span>
             </div>
           </div>
         </div>
@@ -842,20 +848,20 @@
                   <path d="M384 20V234"></path>
                   <path d="M512 20V234"></path>
                 </g>
-                <path id="stock-area" class="chart-area" d="M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48 L640,234 L0,234 Z"></path>
-                <path id="stock-line" class="chart-line" d="M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48"></path>
-                <circle id="stock-dot" class="chart-dot" cx="640" cy="48" r="7"></circle>
+                <path id="stock-area" class="chart-area" d="M0,146 C44,138 82,154 124,148 C166,142 208,152 250,136 C292,120 336,132 378,126 C424,118 462,132 506,116 C554,98 592,106 640,94 L640,234 L0,234 Z"></path>
+                <path id="stock-line" class="chart-line" d="M0,146 C44,138 82,154 124,148 C166,142 208,152 250,136 C292,120 336,132 378,126 C424,118 462,132 506,116 C554,98 592,106 640,94"></path>
+                <circle id="stock-dot" class="chart-dot" cx="640" cy="94" r="7"></circle>
               </svg>
             </div>
           </div>
 
           <div class="stock-stats">
-            <div class="stock-card"><span>Open</span><strong>$409.36</strong></div>
-            <div class="stock-card"><span>Previous Close</span><strong>$409.36</strong></div>
-            <div class="stock-card"><span>Day Range</span><strong>$408.10 - $424.88</strong></div>
+            <div class="stock-card"><span>Open</span><strong>$411.20</strong></div>
+            <div class="stock-card"><span>Previous Close</span><strong>$410.95</strong></div>
+            <div class="stock-card"><span>Day Range</span><strong>$407.90 - $414.25</strong></div>
             <div class="stock-card"><span>52 Week Range</span><strong>$275.00 - $438.00</strong></div>
-            <div class="stock-card"><span>Volume</span><strong>38.4M</strong></div>
-            <div class="stock-card"><span>Market Cap</span><strong>$4.2T</strong></div>
+            <div class="stock-card"><span>Volume</span><strong>22.6M</strong></div>
+            <div class="stock-card"><span>Market Cap</span><strong>$4.1T</strong></div>
             <div class="stock-card"><span>Last Updated</span><strong>Jun 29, 2026, 4:00 PM ET</strong></div>
           </div>
         </div>
@@ -1069,39 +1075,61 @@
     const stockSeries = {
       "1D": {
         label: "Intraday scenario",
-        line: "M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48",
-        dot: [640, 48]
+        change: "+1.85 (+0.45%) today",
+        direction: "up",
+        accent: "#0a8f5c",
+        line: "M0,146 C44,138 82,154 124,148 C166,142 208,152 250,136 C292,120 336,132 378,126 C424,118 462,132 506,116 C554,98 592,106 640,94",
+        dot: [640, 94]
       },
       "5D": {
         label: "Five day scenario",
-        line: "M0,166 C44,174 82,142 130,150 C178,158 214,120 260,126 C316,134 346,86 398,92 C456,100 486,82 534,70 C588,56 608,62 640,42",
-        dot: [640, 42]
+        change: "-3.28 (-0.79%) 5D",
+        direction: "down",
+        accent: "#b42318",
+        line: "M0,108 C44,98 78,116 124,110 C174,104 212,134 258,128 C304,122 344,150 392,144 C438,138 482,166 528,160 C574,154 606,176 640,170",
+        dot: [640, 170]
       },
       "1M": {
         label: "One month scenario",
-        line: "M0,190 C46,172 78,180 122,156 C174,128 210,146 254,120 C304,88 350,106 402,82 C454,58 496,74 544,52 C586,32 618,44 640,28",
-        dot: [640, 28]
+        change: "+6.42 (+1.58%) 1M",
+        direction: "up",
+        accent: "#0a8f5c",
+        line: "M0,158 C44,170 82,142 126,150 C172,158 206,126 252,138 C296,150 336,112 384,120 C430,128 466,146 512,124 C560,102 598,118 640,92",
+        dot: [640, 92]
       },
       "6M": {
         label: "Six month scenario",
-        line: "M0,202 C52,188 80,166 126,176 C172,186 210,132 266,144 C324,156 352,108 410,112 C462,116 492,72 548,80 C594,86 618,54 640,62",
-        dot: [640, 62]
+        change: "-18.12 (-4.21%) 6M",
+        direction: "down",
+        accent: "#b42318",
+        line: "M0,90 C46,78 86,104 130,96 C176,88 212,128 258,120 C306,112 344,154 390,148 C436,142 474,176 522,168 C570,160 604,188 640,180",
+        dot: [640, 180]
       },
       "1Y": {
         label: "One year scenario",
-        line: "M0,214 C52,206 92,180 136,188 C184,196 216,150 262,158 C310,166 340,116 396,126 C448,136 486,88 536,82 C590,76 612,38 640,30",
-        dot: [640, 30]
+        change: "+29.46 (+7.69%) 1Y",
+        direction: "up",
+        accent: "#0a8f5c",
+        line: "M0,190 C48,178 86,202 132,188 C178,174 214,138 260,146 C306,154 342,124 388,132 C436,140 470,96 516,104 C564,112 598,78 640,66",
+        dot: [640, 66]
       },
       "ALL": {
         label: "All time scenario",
-        line: "M0,224 C46,214 76,198 120,204 C164,210 198,164 244,176 C290,188 322,132 374,142 C426,152 468,92 520,98 C578,104 606,44 640,34",
-        dot: [640, 34]
+        change: "+63.80 (+18.28%) all time",
+        direction: "up",
+        accent: "#0a8f5c",
+        line: "M0,210 C46,198 82,216 126,204 C172,192 208,154 254,164 C300,174 336,132 382,142 C428,152 466,112 512,120 C560,128 596,84 640,74",
+        dot: [640, 74]
       }
     };
 
     const stockLine = document.querySelector("#stock-line");
     const stockArea = document.querySelector("#stock-area");
     const stockDot = document.querySelector("#stock-dot");
+    const stockChange = document.querySelector("#stock-change");
+    const stockChangeValue = document.querySelector("#stock-change-value");
+    const stockTerminal = document.querySelector(".stock-terminal");
+    const stockGradientStops = document.querySelectorAll("#lkntArea stop");
     const stockPeriodLabel = document.querySelector("#stock-period-label");
     const stockButtons = document.querySelectorAll("[data-stock-period]");
 
@@ -1112,6 +1140,14 @@
 
         stockButtons.forEach(item => item.classList.toggle("active", item === button));
         stockPeriodLabel.textContent = series.label;
+        if (stockChange && stockChangeValue) {
+          stockChange.classList.toggle("down", series.direction === "down");
+          stockChangeValue.textContent = series.change;
+        }
+        if (stockTerminal) {
+          stockTerminal.style.setProperty("--stock-accent", series.accent);
+        }
+        stockGradientStops.forEach(stop => stop.setAttribute("stop-color", series.accent));
         stockLine.setAttribute("d", series.line);
         stockArea.setAttribute("d", `${series.line} L640,234 L0,234 Z`);
         stockDot.setAttribute("cx", series.dot[0]);
