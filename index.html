@@ -248,69 +248,231 @@
       font-size: 16px;
     }
 
-    .stock-board {
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
-      gap: 20px;
-      align-items: stretch;
+    .stock-terminal {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.08);
+      background:
+        linear-gradient(140deg, rgba(255,255,255,.92), rgba(247,249,252,.72)),
+        radial-gradient(circle at 8% 0%, rgba(78,121,255,.12), transparent 34%),
+        radial-gradient(circle at 92% 18%, rgba(28,185,124,.12), transparent 30%);
+      box-shadow: 0 24px 70px rgba(15,23,42,.1);
+      backdrop-filter: blur(18px);
+      padding: clamp(22px, 4vw, 42px);
     }
 
-    .quote {
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-      padding: 34px 0;
+    .stock-topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 32px;
     }
 
-    .quote-symbol {
-      font-size: 13px;
+    .stock-kicker {
       color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
       text-transform: uppercase;
-      letter-spacing: .14em;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
     }
 
-    .quote-price {
-      font-family: var(--serif);
-      font-size: clamp(62px, 12vw, 126px);
-      line-height: .85;
-      letter-spacing: -.06em;
-    }
-
-    .quote-change {
-      margin-top: 18px;
-      font-size: 20px;
-      color: var(--muted);
+    .stock-symbol {
+      font-size: clamp(40px, 6vw, 78px);
+      letter-spacing: -.05em;
+      line-height: .92;
       font-weight: 700;
     }
 
-    .quote-note {
-      margin-top: 24px;
+    .stock-context {
       color: var(--muted);
-      line-height: 1.7;
-      max-width: 660px;
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 12px;
+      max-width: 620px;
     }
 
-    .quote-stats {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.45);
-      padding: 28px;
+    .stock-price-wrap {
+      text-align: right;
+      min-width: 260px;
+    }
+
+    .stock-price {
+      font-family: var(--serif);
+      font-size: clamp(52px, 8vw, 104px);
+      letter-spacing: -.06em;
+      line-height: .88;
+    }
+
+    .stock-change {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 14px;
+      color: #087a48;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .stock-change svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .stock-periods {
+      display: inline-flex;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.64);
+      backdrop-filter: blur(12px);
+      margin-bottom: 22px;
+    }
+
+    .period-btn {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      padding: 9px 13px;
+      cursor: pointer;
+      transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+
+    .period-btn:hover,
+    .period-btn.active {
+      background: var(--text);
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(0,0,0,.14);
+    }
+
+    .stock-main {
       display: grid;
-      gap: 18px;
+      grid-template-columns: minmax(0, 1.45fr) minmax(290px, .72fr);
+      gap: clamp(20px, 3vw, 34px);
+      align-items: stretch;
     }
 
-    .stat-row {
+    .chart-panel {
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.5);
+      min-height: 390px;
+      padding: clamp(18px, 3vw, 28px);
+      display: flex;
+      flex-direction: column;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .chart-panel:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 45px rgba(15,23,42,.08);
+    }
+
+    .chart-caption {
       display: flex;
       justify-content: space-between;
       gap: 20px;
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 14px;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
     }
 
-    .stat-row strong {
+    .chart-wrap {
+      position: relative;
+      flex: 1;
+      min-height: 280px;
+    }
+
+    .chart-wrap svg {
+      width: 100%;
+      height: 100%;
+      min-height: 280px;
+      display: block;
+      overflow: visible;
+    }
+
+    .chart-grid {
+      stroke: rgba(0,0,0,.07);
+      stroke-width: 1;
+    }
+
+    .chart-area {
+      fill: url(#lkntArea);
+      opacity: .88;
+      transition: d .45s ease;
+    }
+
+    .chart-line {
+      fill: none;
+      stroke: #0a8f5c;
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 8px 12px rgba(10,143,92,.18));
+      stroke-dasharray: 900;
+      animation: drawStock 1s ease both;
+      transition: d .45s ease, stroke .25s ease;
+    }
+
+    .chart-dot {
+      fill: #fff;
+      stroke: #0a8f5c;
+      stroke-width: 4;
+      filter: drop-shadow(0 6px 12px rgba(10,143,92,.2));
+    }
+
+    @keyframes drawStock {
+      from { stroke-dashoffset: 900; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .stock-stats {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .stock-card {
+      border: 1px solid rgba(0,0,0,.08);
+      background: rgba(255,255,255,.58);
+      padding: 18px 18px 16px;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease;
+    }
+
+    .stock-card:hover {
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.84);
+      box-shadow: 0 16px 34px rgba(15,23,42,.08);
+    }
+
+    .stock-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+
+    .stock-card strong {
       color: var(--text);
-      font-size: 15px;
+      font-size: clamp(18px, 2vw, 25px);
+      letter-spacing: -.03em;
+      line-height: 1.15;
+    }
+
+    .stock-footnote {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .filing-controls {
@@ -434,7 +596,15 @@
       .nav-links { display: none; }
       .grid { grid-template-columns: 1fr 1fr; }
       .split { grid-template-columns: 1fr; }
-      .stock-board { grid-template-columns: 1fr; }
+      .stock-topline,
+      .stock-main { grid-template-columns: 1fr; }
+      .stock-topline {
+        display: grid;
+      }
+      .stock-price-wrap {
+        text-align: left;
+        min-width: 0;
+      }
       .report-row { grid-template-columns: 1fr; }
       .footer-inner { flex-direction: column; }
       .filing-table { display: block; overflow-x: auto; white-space: nowrap; }
@@ -446,6 +616,21 @@
       h1 { font-size: 74px; }
       .hero-subtitle { font-size: 20px; }
       .report-title { font-size: 22px; }
+      .stock-terminal { padding: 20px; }
+      .stock-periods {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .period-btn {
+        flex: 0 0 auto;
+      }
+      .chart-panel {
+        min-height: 320px;
+      }
+      .chart-wrap,
+      .chart-wrap svg {
+        min-height: 230px;
+      }
     }
   </style>
 </head>
@@ -549,26 +734,79 @@
     <section id="stock-price" class="reveal">
       <div class="eyebrow">Stock Price</div>
       <h2 class="section-title">LKNT Quote</h2>
-      <div class="stock-board">
-        <div class="quote">
-          <div class="quote-symbol">LKNT - World's most valuable company scenario</div>
-          <div class="quote-price">$421.70</div>
-          <div class="quote-change">+12.34 (+3.01%) model scenario</div>
-          <p class="quote-note">
-            Lukintosh Corporation does not currently generate revenue and is not represented
-            here as a listed security. LKNT pricing is an illustrative investor-relations
-            valuation scenario, not a live market quote.
-          </p>
+      <div class="stock-terminal">
+        <div class="stock-topline">
+          <div>
+            <div class="stock-kicker">Nasdaq Global Select Market scenario</div>
+            <div class="stock-symbol">LKNT</div>
+            <p class="stock-context">
+              Illustrative valuation preview for a future Lukintosh investor-relations experience.
+              Figures are internally modeled for interface demonstration only.
+            </p>
+          </div>
+
+          <div class="stock-price-wrap" aria-label="LKNT illustrative price">
+            <div class="stock-price">$421.70</div>
+            <div class="stock-change">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5l7 8h-5v6h-4v-6H5l7-8z" fill="currentColor"></path>
+              </svg>
+              +12.34 (+3.01%)
+            </div>
+          </div>
         </div>
 
-        <div class="quote-stats">
-          <div class="stat-row"><span>Open</span><strong>$409.36</strong></div>
-          <div class="stat-row"><span>Day range</span><strong>$408.10 - $424.88</strong></div>
-          <div class="stat-row"><span>52 week range</span><strong>$275.00 - $438.00</strong></div>
-          <div class="stat-row"><span>Volume</span><strong>Model only</strong></div>
-          <div class="stat-row"><span>Market cap</span><strong>$4.2T illustrative</strong></div>
-          <div class="stat-row"><span>Last updated</span><strong>Jun 29, 2026</strong></div>
+        <div class="stock-periods" aria-label="Select stock chart period">
+          <button class="period-btn active" type="button" data-stock-period="1D">1D</button>
+          <button class="period-btn" type="button" data-stock-period="5D">5D</button>
+          <button class="period-btn" type="button" data-stock-period="1M">1M</button>
+          <button class="period-btn" type="button" data-stock-period="6M">6M</button>
+          <button class="period-btn" type="button" data-stock-period="1Y">1Y</button>
+          <button class="period-btn" type="button" data-stock-period="ALL">ALL</button>
         </div>
+
+        <div class="stock-main">
+          <div class="chart-panel">
+            <div class="chart-caption">
+              <span id="stock-period-label">Intraday scenario</span>
+              <span>Delayed demo quote</span>
+            </div>
+            <div class="chart-wrap" aria-label="LKNT illustrative stock chart">
+              <svg viewBox="0 0 640 260" role="img">
+                <defs>
+                  <linearGradient id="lkntArea" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="#0a8f5c" stop-opacity=".28"></stop>
+                    <stop offset="100%" stop-color="#0a8f5c" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <g class="chart-grid">
+                  <path d="M0 52H640"></path>
+                  <path d="M0 104H640"></path>
+                  <path d="M0 156H640"></path>
+                  <path d="M0 208H640"></path>
+                  <path d="M128 20V234"></path>
+                  <path d="M256 20V234"></path>
+                  <path d="M384 20V234"></path>
+                  <path d="M512 20V234"></path>
+                </g>
+                <path id="stock-area" class="chart-area" d="M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48 L640,234 L0,234 Z"></path>
+                <path id="stock-line" class="chart-line" d="M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48"></path>
+                <circle id="stock-dot" class="chart-dot" cx="640" cy="48" r="7"></circle>
+              </svg>
+            </div>
+          </div>
+
+          <div class="stock-stats">
+            <div class="stock-card"><span>Open</span><strong>$409.36</strong></div>
+            <div class="stock-card"><span>Previous Close</span><strong>$409.36</strong></div>
+            <div class="stock-card"><span>Day Range</span><strong>$408.10 - $424.88</strong></div>
+            <div class="stock-card"><span>52 Week Range</span><strong>$275.00 - $438.00</strong></div>
+            <div class="stock-card"><span>Volume</span><strong>38.4M</strong></div>
+            <div class="stock-card"><span>Market Cap</span><strong>$4.2T</strong></div>
+            <div class="stock-card"><span>Last Updated</span><strong>Jun 29, 2026, 4:00 PM ET</strong></div>
+          </div>
+        </div>
+        <p class="stock-footnote">Demo interface. LKNT is not publicly traded.</p>
       </div>
     </section>
 
@@ -734,6 +972,63 @@
       filingYear.addEventListener("change", filterFilings);
       filterFilings();
     }
+
+    const stockSeries = {
+      "1D": {
+        label: "Intraday scenario",
+        line: "M0,180 C54,166 88,154 132,160 C190,168 220,124 272,132 C326,140 366,96 422,104 C482,112 516,74 570,72 C604,70 624,58 640,48",
+        dot: [640, 48]
+      },
+      "5D": {
+        label: "Five day scenario",
+        line: "M0,166 C44,174 82,142 130,150 C178,158 214,120 260,126 C316,134 346,86 398,92 C456,100 486,82 534,70 C588,56 608,62 640,42",
+        dot: [640, 42]
+      },
+      "1M": {
+        label: "One month scenario",
+        line: "M0,190 C46,172 78,180 122,156 C174,128 210,146 254,120 C304,88 350,106 402,82 C454,58 496,74 544,52 C586,32 618,44 640,28",
+        dot: [640, 28]
+      },
+      "6M": {
+        label: "Six month scenario",
+        line: "M0,202 C52,188 80,166 126,176 C172,186 210,132 266,144 C324,156 352,108 410,112 C462,116 492,72 548,80 C594,86 618,54 640,62",
+        dot: [640, 62]
+      },
+      "1Y": {
+        label: "One year scenario",
+        line: "M0,214 C52,206 92,180 136,188 C184,196 216,150 262,158 C310,166 340,116 396,126 C448,136 486,88 536,82 C590,76 612,38 640,30",
+        dot: [640, 30]
+      },
+      "ALL": {
+        label: "All time scenario",
+        line: "M0,224 C46,214 76,198 120,204 C164,210 198,164 244,176 C290,188 322,132 374,142 C426,152 468,92 520,98 C578,104 606,44 640,34",
+        dot: [640, 34]
+      }
+    };
+
+    const stockLine = document.querySelector("#stock-line");
+    const stockArea = document.querySelector("#stock-area");
+    const stockDot = document.querySelector("#stock-dot");
+    const stockPeriodLabel = document.querySelector("#stock-period-label");
+    const stockButtons = document.querySelectorAll("[data-stock-period]");
+
+    stockButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        const series = stockSeries[button.dataset.stockPeriod];
+        if (!series || !stockLine || !stockArea || !stockDot || !stockPeriodLabel) return;
+
+        stockButtons.forEach(item => item.classList.toggle("active", item === button));
+        stockPeriodLabel.textContent = series.label;
+        stockLine.setAttribute("d", series.line);
+        stockArea.setAttribute("d", `${series.line} L640,234 L0,234 Z`);
+        stockDot.setAttribute("cx", series.dot[0]);
+        stockDot.setAttribute("cy", series.dot[1]);
+
+        stockLine.style.animation = "none";
+        stockLine.getBoundingClientRect();
+        stockLine.style.animation = "";
+      });
+    });
   </script>
 </body>
 </html>
