@@ -67,6 +67,13 @@
 
     .nav-links a:hover { color: var(--text); }
 
+    .investor-ai-link { color: var(--text); font-weight: 600; }
+    .investor-ai-mobile { display: none; font-size: 13px; border-bottom: 1px solid var(--text); padding-bottom: 3px; }
+    .investor-ai-intro { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .investor-ai-intro h2 { font-family: var(--serif); font-size: clamp(42px, 6vw, 76px); font-weight: 400; letter-spacing: -.045em; }
+    .investor-ai-intro p { color: var(--muted); line-height: 1.7; margin: 16px 0 25px; max-width: 600px; }
+    @media (max-width: 900px) { .investor-ai-mobile { display: inline-block; } }
+
     main { padding-top: 90px; }
 
     section {
@@ -684,7 +691,9 @@
         <a href="#sec-filings">SEC Filings</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
+        <a href="/investor-ai/" class="investor-ai-link">Investor AI</a>
       </div>
+      <a href="/investor-ai/" class="investor-ai-mobile">Investor AI ↗</a>
     </nav>
   </header>
 
@@ -994,6 +1003,12 @@
           </p>
         </div>
       </div>
+    </section>
+
+    <section id="investor-ai" class="investor-ai-intro reveal">
+      <h2>Lukintosh Investor AI</h2>
+      <p>Financial intelligence from revenue to IPO.<br>Revenue analysis, company evidence, and market-specific IPO preparation in one workspace.</p>
+      <a class="btn primary" href="/investor-ai/">Explore Investor AI ↗</a>
     </section>
 
     <section id="contact" class="reveal">

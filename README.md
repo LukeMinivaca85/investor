@@ -1,0 +1,59 @@
+# Lukintosh Investor AI
+
+An additive Investor AI product at `/investor-ai/`. The original Investor Relations page, existing financial information, illustrative stock chart, SEC-style filing tables, PDFs/HTML reports, disclosures and private-company notice remain intact. The original page only gains navigation links and a product introduction.
+
+## Run
+
+Requires Node.js 22.13+ (SQLite is experimental in Node 22).
+
+```sh
+npm ci
+cp .env.example .env
+npm run dev
+```
+
+Open `http://127.0.0.1:5173/investor-ai/`. Set the initial administrator email/password in the server `.env` to sign in. The password is scrypt-hashed on first creation; removing or changing the environment value does not rotate an existing account. Do not paste credentials into chat or commit `.env`. Development generates an ignored local encryption key; production requires a supplied key.
+
+```sh
+npm test
+npm run build
+npm start
+```
+
+Production serves the preserved IR website and the new product from `dist/`, using the backend in `dist-server/`. Place the service behind HTTPS, set `NODE_ENV=production`, `APP_ORIGIN`, `DATA_ENCRYPTION_KEY`, and explicitly configure the trusted proxy if used. `HOST=0.0.0.0` is suitable inside a private container. Keep database files and keys outside public assets. Back up the database and encryption key securely.
+
+## Model integration
+
+Default provider: NVIDIA. Exact catalog model: `nvidia/nemotron-3-ultra-550b-a55b`. Default base URL: `https://integrate.api.nvidia.com/v1`. Configure `NVIDIA_API_KEY` (or `AI_API_KEY`) server-side. `AI_PROVIDER`, `AI_MODEL`, `AI_BASE_URL`, and `AI_APPROVED_HOSTS` allow an OpenAI-compatible provider or private NVIDIA deployment. All requests pass through the backend. Missing configuration returns an explicit error; there is no fake AI response.
+
+NVIDIA’s catalog trial terms restrict confidential/financial information. `AI_DATA_POLICY=synthetic-only` is the fail-closed default. Real company data requires an approved enterprise/private endpoint and appropriate data-processing terms before setting `approved-private`. Changing this setting is an operator responsibility, not proof of contractual approval. [Official model/API example](https://build.nvidia.com/nvidia/nemotron-3-ultra-550b-a55b), [NVIDIA trial terms](https://assets.ngc.nvidia.com/products/api-catalog/legal/NVIDIA%20API%20Trial%20Terms%20of%20Service.pdf).
+
+## What works
+
+- Revenue, expenses, MRR/ARR, growth, gross margin, burn, cash runway, concentration, historical records and assumption-based scenarios are deterministic calculations. Sample records are explicitly synthetic and separate from Lukintosh disclosures.
+- Market selection covers Nasdaq, NYSE, B3, LSE, Euronext, HKEX, Tokyo and Other. Segment and issuer domicile are collected; Euronext/Other also require a venue. Each route has its own guidance and official references. This is a preparation checklist, not an exchange-eligibility engine.
+- Readiness is `verified evidence-backed criteria / total criteria`. No evidence means “Not assessed.” The sample 42% is exactly 10/24. Category panels show gaps, rationale, evidence and actions. Authorized reviewers explicitly approve evidence; AI cannot do so.
+- Documents accept text/Markdown/CSV or pasted extracted text. Pending evidence, read-only sources, authorized imports, consent/revocation, audit events, and structured source-cited AI output have backend routes.
+- A transparent primary-equity fundraising scenario estimates dilution. Full cap-table reconciliation, instrument valuation and legal conclusions require specialist review.
+
+## Connection contract
+
+Configure named adapters in server-only `CONNECTOR_CONFIG_JSON`, each scoped to a single `companyId`:
+
+```json
+{"accounting":{"companyId":"primary","name":"Accounting API","kind":"Accounting","url":"https://approved-company-host.example/export","tokenEnv":"ACCOUNTING_READ_TOKEN"}}
+```
+
+The authenticated company administrator grants explicit read-only consent. A sync makes only an authenticated HTTPS GET, disallows redirects, validates bounded JSON, and records its exact source ID. The adapter response is `{ "records": [...] }` using the format shown in the import dialog. Monthly amounts must use consistent USD recognition/cash assumptions. The current workspace snapshot is replaced only on successful validated ingestion. Original accounting records are never modified. Concurrent revocation or a newer financial snapshot cancels a pending sync.
+
+Provider-specific OAuth integrations, PDF/DOCX extraction, malware scanning, external data-room sharing and regulatory submission are **not implemented**. Configure those adapters before representing them as connected. No credentials are entered in browser forms.
+
+## Production boundaries
+
+This is a working application foundation, not a certified production financial platform. Before a real launch: integrate organizational SSO/MFA and user lifecycle/recovery; use shared rate limiting for multiple replicas; review retention/deletion and backup policies; harden operator provisioning; validate connector contracts; perform penetration testing and legal/accounting review; provision model data-processing terms. SQLite, local fixed-window limits and bootstrap login target a single service instance. Audit events are durable and contain source IDs/review rationale, but are not an externally immutable audit archive.
+
+Never expose `data/`, server code, `.env`, or keys through static hosting. Only `dist/` is public. GitHub Pages or other static hosting alone cannot run authentication/model APIs. Deploy the Node service or route `/api` to an equivalent secured backend; do not replace the existing production site with a static-only build and imply that company features work.
+
+## Validation and delivery
+
+See `docs/validation.md`. No production deployment or repository push was performed. `.design/investor-ai-concept.png` preserves the design concept; the interface is implemented in native React/CSS/SVG.

@@ -1,0 +1,9 @@
+import { useEffect,useRef,type ReactNode } from 'react';
+import { X,ArrowUpRight,ArrowRight,Info } from 'lucide-react';
+export const money=(n:number|null|undefined,compact=false)=>n==null?'—':new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0,...(compact?{notation:'compact' as const}:{})}).format(n);
+export const pct=(n:number|null|undefined)=>n==null?'—':`${n.toFixed(1)}%`;
+export function Button({children,onClick,secondary=false,disabled=false,type='button'}:{children:ReactNode;onClick?:()=>void;secondary?:boolean;disabled?:boolean;type?:'button'|'submit'}){return <button type={type} className={`button ${secondary?'secondary':''}`} onClick={onClick} disabled={disabled}>{children}</button>;}
+export function Modal({title,children,onClose}:{title:string;children:ReactNode;onClose:()=>void}){const ref=useRef<HTMLDialogElement>(null);useEffect(()=>{const el=ref.current;el?.showModal();return()=>el?.close();},[]);return <dialog ref={ref} onCancel={onClose} onClick={e=>{if(e.target===e.currentTarget)onClose();}} aria-label={title}><div className="modal-head"><h2>{title}</h2><button className="icon-button" aria-label="Close dialog" onClick={onClose}><X size={20}/></button></div><div className="modal-body">{children}</div></dialog>;}
+export function Empty({title,children,action}:{title:string;children:ReactNode;action?:ReactNode}){return <div className="empty"><div className="empty-mark"><ArrowUpRight size={26}/></div><h3>{title}</h3><p>{children}</p>{action}</div>;}
+export function Note({children}:{children:ReactNode}){return <div className="note"><Info size={16}/><span>{children}</span></div>;}
+export function SourceLink({onClick,label='View evidence'}:{onClick:()=>void;label?:string}){return <button className="text-button" onClick={onClick}>{label}<ArrowRight size={14}/></button>;}
